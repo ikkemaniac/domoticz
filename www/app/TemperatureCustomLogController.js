@@ -44,7 +44,7 @@ define(['app'], function (app) {
                             showDuration: 1000
                         },
                         credits: {
-                            enabled: true,
+                            enabled: false,
                             href: "http://www.domoticz.com",
                             text: "Domoticz.com"
                         },
