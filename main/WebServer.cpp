@@ -12586,10 +12586,8 @@ namespace http {
 
 											float TotalValue = float(actValue - ulFirstValue);
 
-											if (TotalValue != 0)
+											switch (metertype)
 											{
-												switch (metertype)
-												{
 												case MTYPE_ENERGY:
 												case MTYPE_ENERGY_GENERATED:
 													sprintf(szTmp, "%.3f", (TotalValue / EnergyDivider)*1000.0f);	//from kWh -> Watt
@@ -12604,9 +12602,9 @@ namespace http {
 													sprintf(szTmp, "%.1f", TotalValue);
 													break;
 												}
-												root["result"][ii]["v"] = szTmp;
-												ii++;
-											}
+											root["result"][ii]["v"] = szTmp;
+											ii++;
+
 										}
 										ulFirstValue = actValue;
 										LastDateTime = actDateTimeHour;
@@ -12643,10 +12641,8 @@ namespace http {
 										root["result"][ii]["d"] = sd[1].substr(0, 16);
 
 										float TotalValue = float(curValue);
-										if (TotalValue != 0)
+										switch (metertype)
 										{
-											switch (metertype)
-											{
 											case MTYPE_ENERGY:
 											case MTYPE_ENERGY_GENERATED:
 												sprintf(szTmp, "%.3f", (TotalValue / EnergyDivider)*1000.0f);	//from kWh -> Watt
@@ -12660,10 +12656,10 @@ namespace http {
 											case MTYPE_COUNTER:
 												sprintf(szTmp, "%.1f", TotalValue);
 												break;
-											}
-											root["result"][ii]["v"] = szTmp;
-											ii++;
 										}
+										root["result"][ii]["v"] = szTmp;
+										ii++;
+
 
 									}
 									else
@@ -12682,9 +12678,7 @@ namespace http {
 
 							float TotalValue = float(ulTotalValue);
 
-							if (TotalValue != 0)
-							{
-								switch (metertype)
+							switch (metertype)
 								{
 								case MTYPE_ENERGY:
 								case MTYPE_ENERGY_GENERATED:
@@ -12700,9 +12694,9 @@ namespace http {
 									sprintf(szTmp, "%.1f", TotalValue);
 									break;
 								}
-								root["result"][ii]["v"] = szTmp;
-								ii++;
-							}
+							root["result"][ii]["v"] = szTmp;
+							ii++;
+
 						}
 					}
 				}
