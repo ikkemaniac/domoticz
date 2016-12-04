@@ -2478,11 +2478,11 @@ define(['app'], function (app) {
 					}
 					var xhtm="";
 								if (($scope.config.DashboardType==2)||(window.myglobals.ismobile==true)) {
-									var vname='<img src="images/next.png" onclick="ShowTempLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
+									var vname='<img src="images/next.png" onclick="cccccShowTempLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
 
 									xhtm+=
-											'\t    <tr id="temp_' + item.idx +'">\n' +
-											'\t      <td id="name">' + vname + '</td>\n';
+											'\t    <tr id="temp_' + item.idx +'" onclick="ShowTempLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" >\n' +
+											'\t      <td id="name"  >' + vname + '</td>\n';
 									var status="";
 									var bHaveBefore=false;
 									if (typeof item.Temp != 'undefined') {
