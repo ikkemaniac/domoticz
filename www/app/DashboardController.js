@@ -535,6 +535,8 @@ define(['app'], function (app) {
 										}
 										else if (item.SwitchType == "Contact") {
 											if (item.Status == 'Closed') {
+												//~ TODO: mod the onclicks to the whole table row
+												//~ search for 'onclick="Show' in this document
 												img='<img src="images/contact48.png" onclick="ShowLightLog(' + item.idx + ',\'' + escape(item.Name)  + '\', \'#dashcontent\', \'ShowFavorites\');" class="lcursor" height="40" width="40" >';
 											}
 											else {
@@ -2478,10 +2480,10 @@ define(['app'], function (app) {
 					}
 					var xhtm="";
 								if (($scope.config.DashboardType==2)||(window.myglobals.ismobile==true)) {
-									var vname='<img src="images/next.png" onclick="cccccShowTempLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
-
+									var vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+									var vlink='onclick="ShowTempLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"'
 									xhtm+=
-											'\t    <tr id="temp_' + item.idx +'" onclick="ShowTempLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" >\n' +
+											'\t    <tr id="temp_' + item.idx +'" '+ vlink +' >\n' +
 											'\t      <td id="name"  >' + vname + '</td>\n';
 									var status="";
 									var bHaveBefore=false;
@@ -2641,26 +2643,33 @@ define(['app'], function (app) {
 					var xhtm="";
 								if (($scope.config.DashboardType==2)||(window.myglobals.ismobile==true)) {
 									var vname=item.Name;
+									var vlink='';
 									if (typeof item.UVI != 'undefined') {
-										vname='<img src="images/next.png" onclick="ShowUVLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
+										vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+										vlink='onclick="ShowUVLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 									}
 									else if (typeof item.Visibility != 'undefined') {
-										vname='<img src="images/next.png" onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\',' + item.SwitchTypeVal +', \'Visibility\');" height="16" width="16">' + " " + item.Name;
+										vname='<img src="images/next.png"  height="16" width="16">' + " " + item.Name;
+										vlink='onclick="ShowUVLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 									}
 									else if (typeof item.Radiation != 'undefined') {
-										vname='<img src="images/next.png" onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\',' + item.SwitchTypeVal +', \'Radiation\');" height="16" width="16">' + " " + item.Name;
+										vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+										vlink='onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\',' + item.SwitchTypeVal +', \'Radiation\');"';
 									}
 									else if (typeof item.Direction != 'undefined') {
-										vname='<img src="images/next.png" onclick="ShowWindLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
+										vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+										vlink='onclick="ShowWindLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 									}
 									else if (typeof item.Rain != 'undefined') {
-										vname='<img src="images/next.png" onclick="ShowRainLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
+										vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+										vlink='onclick="ShowRainLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 									}
 									else if (typeof item.Barometer != 'undefined') {
-										vname='<img src="images/next.png" onclick="ShowBaroLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
+										vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+										vlink='onclick="ShowBaroLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 									}
 									xhtm+=
-											'\t    <tr id="weather_' + item.idx +'">\n' +
+											'\t    <tr id="weather_' + item.idx +'" '+ vlink +'>\n' +
 											'\t      <td id="name">' + vname + '</td>\n';
 									var status="";
 									if (typeof item.Rain != 'undefined') {
@@ -3158,78 +3167,102 @@ define(['app'], function (app) {
 					var xhtm="";
 					if (($scope.config.DashboardType==2)||(window.myglobals.ismobile==true)) {
 						var vname = item.Name;
+						var vlink = '';
 						if (typeof item.Counter != 'undefined') {
 							if (item.Type == "RFXMeter") {
-								vname='<img src="images/next.png" onclick="ShowCounterLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');" height="16" width="16">' + " " + item.Name;
+								vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+								vlink='onclick="ShowCounterLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');"';
 							}
 							else {
 								if ((item.Type == "P1 Smart Meter")&&(item.SubType=="Energy")) {
-									vname='<img src="images/next.png" onclick="ShowSmartLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');" height="16" width="16">' + " " + item.Name;
+									vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+									vlink='onclick="ShowSmartLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');"';
 								}
 								else if ((item.Type == "P1 Smart Meter")&&(item.SubType=="Gas")) {
-									vname='<img src="images/next.png" onclick="ShowCounterLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');" height="16" width="16">' + " " + item.Name;
+									vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+									vlink='onclick="ShowCounterLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');"';
 								}
 								else if ((item.Type == "YouLess Meter")&&(item.SwitchTypeVal==0 || item.SwitchTypeVal==4)) {
-									vname='<img src="images/next.png" onclick="ShowCounterLogSpline(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');" height="16" width="16">' + " " + item.Name;
+									vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+									vlink='onclick="ShowCounterLogSpline(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');"';
 								}
 								else {
-									vname='<img src="images/next.png" onclick="ShowCounterLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');" height="16" width="16">' + " " + item.Name;
+									vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+									vlink='onclick="ShowCounterLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');"';
 								}
 							}
 						}
 						else if ((item.Type == "Current")||(item.Type == "Current/Energy")) {
-							vname='<img src="images/next.png" onclick="ShowCurrentLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.displaytype + ');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowCurrentLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.displaytype + ');"';
 						}
 						else if ((item.Type == "Energy") || (item.SubType == "kWh") || (item.SubType == "Power")) {
-							vname='<img src="images/next.png" onclick="ShowCounterLogSpline(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowCounterLogSpline(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');"';
 						}
 						else if (item.Type == "Air Quality") {
-							vname='<img src="images/next.png" onclick="ShowAirQualityLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowAirQualityLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 						}
 						else if (item.SubType == "Percentage") {
-							vname='<img src="images/next.png" onclick="ShowPercentageLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowPercentageLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 						}
 						else if (item.SubType=="Custom Sensor") {
-							vname='<img src="images/' + item.Image + '48_On.png" onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', \'' + escape(item.SensorUnit) +'\', \'' + item.SubType + '\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/' + item.Image + '48_On.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', \'' + escape(item.SensorUnit) +'\', \'' + item.SubType + '\');"';
 						}
 						else if (item.Type == "Fan") {
-							vname='<img src="images/next.png" onclick="ShowFanLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowFanLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 						}				
 						else if (item.Type == "Lux") {
-							vname='<img src="images/next.png" onclick="ShowLuxLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowLuxLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 						}
 						else if (item.Type == "Usage") {
-							vname='<img src="images/next.png" onclick="ShowUsageLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowUsageLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal + ');"';
 						}
 						else if (item.SubType=="Soil Moisture") {
-							vname='<img src="images/next.png" onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal +', \'' + item.SubType + '\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal +', \'' + item.SubType + '\');"';
 						}
 						else if (item.SubType=="Distance") {
-							vname='<img src="images/next.png" onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal +', \'DistanceGeneral\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal +', \'DistanceGeneral\');"';
 						}
 						else if ((item.SubType=="Voltage")||(item.SubType=="Current")||(item.SubType=="A/D")) {
-							vname='<img src="images/next.png" onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal +', \'VoltageGeneral\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal +', \'VoltageGeneral\');"';
 						}
 						else if (item.SubType=="Text") {
-							vname='<img src="images/next.png" onclick="ShowTextLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowTextLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 						}
 						else if (item.SubType=="Alert") {
-							vname='<img src="images/next.png" onclick="ShowTextLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowTextLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 						}
 						else if (item.SubType=="Pressure") {
-							vname='<img src="images/next.png" onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\',' + item.SwitchTypeVal +', \'' + item.SubType + '\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\',' + item.SwitchTypeVal +', \'' + item.SubType + '\');"';
 						}
 						else if ((item.Type == "Thermostat")&&(item.SubType=="SetPoint")) {
-							vname='<img src="images/next.png" onclick="ShowTempLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;						
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;						
+							vlink='onclick="ShowTempLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 						}
 						else if (item.SubType=="Smartwares") {
-							vname='<img src="images/next.png" onclick="ShowTempLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;						
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowTempLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');"';
 						}
 						else if (item.SubType=="Sound Level") {
-							vname='<img src="images/next.png" onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\',' + item.SwitchTypeVal +', \'' + item.SubType + '\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\',' + item.SwitchTypeVal +', \'' + item.SubType + '\');"';
 						}
 						else if (item.SubType=="Waterflow") {
-							vname='<img src="images/next.png" onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal +', \'' + item.SubType + '\');" height="16" width="16">' + " " + item.Name;
+							vname='<img src="images/next.png" height="16" width="16">' + " " + item.Name;
+							vlink='onclick="ShowGeneralGraph(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\', ' + item.SwitchTypeVal +', \'' + item.SubType + '\');"';
 						}
 
 						var status="";
@@ -3313,7 +3346,7 @@ define(['app'], function (app) {
 							}
 						}
 						xhtm+=
-								'\t    <tr id="utility_' + item.idx +'">\n' +
+								'\t    <tr id="utility_' + item.idx +'" '+ vlink + ' >\n' +
 								'\t      <td id="name">' + vname + '</td>\n' +
 								'\t      <td id="status">' + status + '</td>\n' +
 								'\t    </tr>\n';
