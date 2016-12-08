@@ -826,9 +826,6 @@ define(['app'], function (app) {
 								if (typeof obj != 'undefined') {
 									var vname=item.Name;
 									if (($scope.config.DashboardType==2)||(window.myglobals.ismobile==true)) {
-										var vname='<img src="images/next.png" onclick="ShowTempLog(\'#dashcontent\',\'ShowFavorites\',' + item.idx + ',\'' + escape(item.Name) + '\');" height="16" width="16">' + " " + item.Name;
-									}
-									if (($scope.config.DashboardType==2)||(window.myglobals.ismobile==true)) {
 										var status="";
 										var bHaveBefore=false;
 										if (typeof item.Temp != 'undefined') {
