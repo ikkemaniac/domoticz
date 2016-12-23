@@ -2574,11 +2574,9 @@ namespace http {
 		{
 			if (session.rights != 2)
 				return;//Only admin user allowed
-#ifdef WIN32
-			int ret = system("shutdown -s -f -t 1 -d up:125:1");
-#else
-			int ret = system("sudo shutdown -h now");
-#endif
+
+			//DO NOT ALLOW A PROGRAM TO SHUTDOWN THE SYSTEM!
+			int ret = -1;
 			if (ret != 0)
 			{
 				_log.Log(LOG_ERROR, "Error executing shutdown command. returned: %d", ret);
@@ -2592,11 +2590,9 @@ namespace http {
 		{
 			if (session.rights != 2)
 				return;//Only admin user allowed
-#ifdef WIN32
-			int ret = system("shutdown -r -f -t 1 -d up:125:1");
-#else
-			int ret = system("sudo shutdown -r now");
-#endif
+
+			//DO NOT ALLOW A PROGRAM TO REBOOT THE SYSTEM!
+			int ret = -1;
 			if (ret != 0)
 			{
 				_log.Log(LOG_ERROR, "Error executing reboot command. returned: %d", ret);
