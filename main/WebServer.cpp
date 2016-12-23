@@ -2740,6 +2740,10 @@ namespace http {
 
 		void CWebServer::Cmd_CheckForUpdate(WebEmSession & session, const request& req, Json::Value &root)
 		{
+			_log.Log(LOG_ERROR, "Checking for updates is disabled in this build!");
+			root["status"] = "ERR";
+			return;
+
 			bool bHaveUser = (session.username != "");
 			int urights = 3;
 			if (bHaveUser)
@@ -2778,6 +2782,10 @@ namespace http {
 
 		void CWebServer::Cmd_DownloadUpdate(WebEmSession & session, const request& req, Json::Value &root)
 		{
+			_log.Log(LOG_ERROR, "Downloading updates is disabled in this build!");
+			root["status"] = "ERR";
+			return;
+
 			if (!m_mainworker.StartDownloadUpdate())
 				return;
 			root["status"] = "OK";
@@ -2786,6 +2794,10 @@ namespace http {
 
 		void CWebServer::Cmd_DownloadReady(WebEmSession & session, const request& req, Json::Value &root)
 		{
+			_log.Log(LOG_ERROR, "Checking for/downloading updates is disabled in this build!");
+			root["status"] = "ERR";
+			return;
+
 			if (!m_mainworker.m_bHaveDownloadedDomoticzUpdate)
 				return;
 			root["status"] = "OK";
