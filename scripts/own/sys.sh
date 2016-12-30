@@ -6,6 +6,9 @@
  LAN_RX_IDX="15"		# LAN received bytes
  LAN_TX_IDX="16"		# LAN transmitted bytes
  DOMO_MEMC_IDX="21"		# domo mem usage in a custom counter (kb - line graph)
+ MEM_TOTAL_IDX="27"
+ MEM_USED_IDX="28"
+ MEM_FREE_IDX="29"
 
 ### CPU Load in % ###
 #CPULoad=`top -b -n2 -p 1 | fgrep "Cpu(s)" | tail -1 | awk -F'id,' -v prefix="$prefix" '{ split($1, vs, ","); v=vs[length(vs)]; sub("%", "", v); printf "%s%.1f%%\n", prefix, 100 - v }' `
@@ -36,3 +39,13 @@ DOMOMemUsagekB=`cat /proc/$(pgrep domoticz)/status |grep VmRSS |awk '{ print $2 
 echo "DOMO mem usage (kB): $DOMOMemUsagekB"
 # post data
 curl -s --max-time 20 -i -H "Accept: application/json" -s "http://$DOMO_IP:$DOMO_PORT/json.htm?type=command&param=udevice&idx=$DOMO_MEMC_IDX&nvalue=0&svalue=$DOMOMemUsagekB" > /dev/null
+
+MEMInfo=`free -k|grep Mem`
+MEMTotal=`echo ${MEMInfo}|awk '{ print $2 }'`
+MEMUsed=`echo ${MEMInfo}|awk '{ print $3 }'`
+MEMFree=`echo ${MEMInfo}|awk '{ print $4 }'`
+
+# post data
+curl -s --max-time 20 -i -H "Accept: application/json" -s "http://$DOMO_IP:$DOMO_PORT/json.htm?type=command&param=udevice&idx=$MEM_TOTAL_IDX&nvalue=0&svalue=$MEMTotal" > /dev/null
+curl -s --max-time 20 -i -H "Accept: application/json" -s "http://$DOMO_IP:$DOMO_PORT/json.htm?type=command&param=udevice&idx=$MEM_USED_IDX&nvalue=0&svalue=$MEMUsed" > /dev/null
+curl -s --max-time 20 -i -H "Accept: application/json" -s "http://$DOMO_IP:$DOMO_PORT/json.htm?type=command&param=udevice&idx=$MEM_FREE_IDX&nvalue=0&svalue=$MEMFree" > /dev/null
