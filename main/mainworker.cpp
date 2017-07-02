@@ -1481,6 +1481,7 @@ void MainWorker::Do_Work()
 			std::string lscript = scriptname + " " + strparm;
 			_log.Log(LOG_STATUS, "Starting: %s", lscript.c_str());
 			int ret = system(lscript.c_str());
+			_log.Log(LOG_STATUS, "ret: %d", ret);
 			m_bHaveDownloadedDomoticzUpdateSuccessFull = (ret == 0);
 #endif
 			m_bHaveDownloadedDomoticzUpdate=true;
